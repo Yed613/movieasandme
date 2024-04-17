@@ -62,9 +62,6 @@ class Search extends React.Component {
                         <FilmItem
                             film={item}
                             displayDetailForFilm={this.displayDetailForFilm}
-
-
-
                         />
                     )}
                 />
