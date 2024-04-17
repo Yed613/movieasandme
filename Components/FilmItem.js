@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, Image } from 'react-native'
 import { StyleSheet } from 'react-native-web'
 import { getImageFromApi } from '../API/TMDBApi'
+import { Pressable } from 'react-native'
 
 
 // création d'un style pour les images des films grace a l'API StyleSheet et de chaque éléments de l'affichage des films
@@ -32,9 +33,10 @@ const styles = StyleSheet.create({
 // class créer pour gérer l'affichage des films 
 class FilmItem extends React.Component {
     render() {
-        const film = this.props.film
+        const { film, displayDetailForFilm } = this.props
         console.log(this.props.film.title)
         return (
+
             <View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'grey' }}>
                 <Image
                     style={styles.image}
@@ -43,6 +45,7 @@ class FilmItem extends React.Component {
                 <View style={{ flex: 2, backgroundColor: 'grey' }}>
                     <Text>
                         {film.title}
+                        <Pressable onPress={() => displayDetailForFilm(film.id)}></Pressable>
                     </Text>
                 </View>
                 <View style={{ flex: 3, flexDirection: 'row', backgroundColor: 'grey' }}>
@@ -61,6 +64,7 @@ class FilmItem extends React.Component {
                     </Text>
                 </View>
             </View>
+
         )
 
     }
