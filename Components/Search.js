@@ -63,6 +63,9 @@ class Search extends React.Component {
                             film={item}
                             onPress={(FilmItem.onPress)}
                             displayDetailForFilm={this.displayDetailForFilm}
+
+
+
                         />
                     )}
                 />
