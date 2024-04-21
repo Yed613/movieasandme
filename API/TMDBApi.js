@@ -13,9 +13,6 @@ const getFilmsFromApiWithSearchedText = async (text) => {
         console.log(url)
         const response = await axios.get(url)
         console.log('--getFilmsFromApiWithSearchedText--')
-        console.log(url)
-        console.log(response.data)
-        console.log('--fin getFilmsFromApiWithSearchedText--')
         return response.data
     } catch (error) {
         console.error('Error fetching films:', error);
@@ -44,6 +41,8 @@ const getFilmDetailFromApi = async (id) => {
             API_TOKEN +
             '&language=fr'
         const response = await axios.get(url)
+        console.log(url)
+        console.log('--getFilmsDetailFromApi--')
         return response.data
     } catch {
         console.error('Error fetching film detail:', error);

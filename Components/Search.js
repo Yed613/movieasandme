@@ -41,7 +41,7 @@ class Search extends React.Component {
     }
 
     displayDetailForFilm = (idFilm) => {
-        this.props.navigation.navigate('FilmDetail', { idFilm: idFilm })
+        console.log('film.id=' + idFilm)
     }
 
     render() {
@@ -61,6 +61,7 @@ class Search extends React.Component {
                     renderItem={({ item }) => (
                         <FilmItem
                             film={item}
+                            onPress={(FilmItem.onPress)}
                             displayDetailForFilm={this.displayDetailForFilm}
                         />
                     )}

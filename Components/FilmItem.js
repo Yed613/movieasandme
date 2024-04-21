@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Text, Image, PreviewLayout } from 'react-native'
 import { StyleSheet } from 'react-native-web'
 import { getImageFromApi } from '../API/TMDBApi'
 import { Pressable } from 'react-native'
+
 
 
 // création d'un style pour les images des films grace a l'API StyleSheet et de chaque éléments de l'affichage des films
@@ -34,31 +35,36 @@ const styles = StyleSheet.create({
 class FilmItem extends React.Component {
     render() {
         const { film, displayDetailForFilm } = this.props
-        console.log(this.props.film.title)
         return (
 
-            <View style={{ flex: 1, flexDirection: 'row', backgroundColor: 'grey' }}>
+            <View style={{
+                flex: 1, flexDirection: 'row', backgroundColor: '#f0ffff', borderWidth: 3, borderColor: '#dcdcdc', borderBottomLeftRadius: 50,
+                borderBottomRightRadius: 50, borderCurve: 'circular'
+            }}>
                 <Image
                     style={styles.image}
                     source={getImageFromApi(film.poster_path)}
+                    onPress={() => FilmDetail}
                 />
-                <View style={{ flex: 2, backgroundColor: 'grey' }}>
+                <View style={{ flex: 2, backgroundColor: '#f0ffff' }}>
                     <Text>
                         {film.title}
-                        <Pressable onPress={() => displayDetailForFilm(film.id)}></Pressable>
+
                     </Text>
+
                 </View>
-                <View style={{ flex: 3, flexDirection: 'row', backgroundColor: 'grey' }}>
+                <View style={{ flex: 3, flexDirection: 'row', backgroundColor: '#f0ffff' }}>
                     <Text>
                         {film.vote_average}
                     </Text>
                 </View>
-                <View style={{ flex: 4, backgroundColor: 'grey' }}>
+                <View style={{ flex: 4, backgroundColor: '#f0ffff' }}>
                     <Text>
                         {film.overview}
                     </Text>
+
                 </View>
-                <View style={{ flex: 5, backgroundColor: 'grey' }}>
+                <View style={{ flex: 5, backgroundColor: '#f0ffff' }}>
                     <Text>
                         {film.release_date}
                     </Text>

@@ -60,16 +60,20 @@ class FilmDetail extends React.Component {
             )
         }
     }
+    displayDetailForFilm = (idFilm) => {
+        console.log('film.id=' + idFilm)
+        this.props.navigation.navigate('FilmDetail', { idFilm: idFilm })
+    }
 
     render() {
-        const { idFilm } = this.props.navigation.getParam('idFilm')
-        console.log('Component FilmDetail rendu idFilm = ' + idFilm)
+        console.log(this.props.navigation)
         return (
             <View style={styles.main_container}>
-                {this._displayLoading()}
-                {this._displayFilm()}
+                <Text>Détail du film</Text>
             </View>
         )
+
+
     }
 }
 
