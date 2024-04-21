@@ -1,4 +1,5 @@
-
+import { createAppContainer } from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 import Search from '../Components/Search'
 import FilmDetail from '../Components/FilmDetail'
 import { NavigationContainer } from '@react-navigation/native'
@@ -10,12 +11,10 @@ const Stack = createNativeStackNavigator();
 function Navigation() {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='Accueil'>
-                <Stack.Screen name="Rechercher film" component={Search} options={{ title: 'Accueil' }} />
-                <Stack.Screen name="FilmDetail" component={FilmDetail} options={{ title: 'Detail' }} />
+            <Stack.Navigator>
+                <Stack.Screen name="Rechercher film" component={Search} />
             </Stack.Navigator>
         </NavigationContainer >)
 }
-
 
 export default Navigation

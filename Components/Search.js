@@ -17,15 +17,14 @@ class Search extends React.Component {
     constructor(props) {
         super(props)
         this.searchedText = '' // Initialisation de notre donnée searchedText en dehors du state
-        this.state = { films: [] }
     }
 
     _loadFilms() {
-
         if (this.searchedText.length === 0) return
+
         getFilmsFromApiWithSearchedText(this.searchedText)
             .then((data) => {
-                this.setState({ films: data.results })
+                // Dispatch action pour stocker les films dans Redux
             })
             .catch((err) => {
                 alert('erreur : \n' + err)
@@ -56,16 +55,16 @@ class Search extends React.Component {
                 <Button title="Rechercher" onPress={() => this._loadFilms()} />
                 {this._displayLoading()}
                 <FlatList
-                    data={this.state.films}
+                    data={this.props.films}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                         <FilmItem
                             film={item}
                             onPress={(FilmItem.onPress)}
                             displayDetailForFilm={this.displayDetailForFilm}
-
-
-
+                            isFilmFavorite={this.props.favoritesFilm.some(
+                                (film) => film.id === item.id
+                            )}
                         />
                     )}
                 />
@@ -89,6 +88,12 @@ const styles = StyleSheet.create({
     },
 })
 
+const mapStateToProps = (state) => {
+    return {
+        films: state.films, // Assurez-vous que le reducer stocke les films dans le store sous la clé 'films'
+        isLoading: state.isLoading, // Assurez-vous que le reducer stocke l'état de chargement dans le store sous la clé 'isLoading'
+        favoritesFilm: state.favoritesFilm, // Assurez-vous que le reducer stocke les films favoris dans le store sous la clé 'favoritesFilm'
+    }
+}
 
-
-export default Search
+export default connect(mapStateToProps)(Search)

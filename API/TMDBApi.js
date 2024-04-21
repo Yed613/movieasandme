@@ -4,13 +4,13 @@ import { API_TOKEN } from '@env'
 const getFilmsFromApiWithSearchedText = async (text) => {
     try {
 
-        // await slowNetwork()
+        await slowNetwork()
         const url =
             'https://api.themoviedb.org/3/search/movie?api_key=' + API_TOKEN
             +
             '&language=fr&query=' +
             text
-        console.log(url)
+
         const response = await axios.get(url)
         console.log('--getFilmsFromApiWithSearchedText--')
         return response.data
@@ -52,4 +52,4 @@ const getFilmDetailFromApi = async (id) => {
 
 export { getFilmDetailFromApi }
 export { getImageFromApi }
-export { getFilmsFromApiWithSearchedText }
+export default getFilmsFromApiWithSearchedText
