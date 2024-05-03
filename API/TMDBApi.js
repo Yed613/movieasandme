@@ -2,6 +2,7 @@ import axios from 'axios'
 import { API_TOKEN } from '@env'
 
 const getFilmsFromApiWithSearchedText = async (text) => {
+
     try {
 
         await slowNetwork()
@@ -10,10 +11,15 @@ const getFilmsFromApiWithSearchedText = async (text) => {
             +
             '&language=fr&query=' +
             text
-
+        console.log(url)
         const response = await axios.get(url)
         console.log('--getFilmsFromApiWithSearchedText--')
-        return response.data
+        if (response.data && response.data.results) {
+            console.log(response.data)
+            return response.data;
+        } else {
+            throw new Error('Pas de résultats trouvés')
+        }
     } catch (error) {
         console.error('Error fetching films:', error);
         throw error;
@@ -30,7 +36,7 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 async function slowNetwork() {
-    await sleep(5000)
+    await sleep(100)
 }
 const getFilmDetailFromApi = async (id) => {
     try {
@@ -44,12 +50,11 @@ const getFilmDetailFromApi = async (id) => {
         console.log(url)
         console.log('--getFilmsDetailFromApi--')
         return response.data
-    } catch {
+    } catch (error) {
         console.error('Error fetching film detail:', error);
         throw error;
     }
 }
 
-export { getFilmDetailFromApi }
-export { getImageFromApi }
-export default getFilmsFromApiWithSearchedText
+export { getFilmsFromApiWithSearchedText, getImageFromApi, getFilmDetailFromApi };
+

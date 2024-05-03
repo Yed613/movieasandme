@@ -14,22 +14,26 @@ class FilmDetail extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            film: undefined, // Pour l'instant on n'a pas les infos du film, on initialise donc le film à undefined.
+            film: [], // Pour l'instant on n'a pas les infos du film, on initialise donc le film à undefined.
             isLoading: true, // A l'ouverture de la vue, on affiche le chargement, le temps de récupérer le détail du film
         }
     }
 
     componentDidMount() {
-        console.log('Component FilmDetail monté')
-        getFilmDetailFromApi(this.props.navigation.state.params.idFilm).then(
-            (data) => {
+        console.log('Component FilmDetail mounted');
+        console.log('Props:', this.props);
+
+        const { idFilm } = this.props.route.params;
+        getFilmDetailFromApi(idFilm)
+            .then((data) => {
                 this.setState({
                     film: data,
                     isLoading: false,
                 })
-            }
-        )
+            })
     }
+
+
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log('Component FilmDetail componentDidUpdate')
@@ -66,17 +70,21 @@ class FilmDetail extends React.Component {
     }
 
     render() {
+        const { film } = this.state
         console.log(this.props.navigation)
         return (
-            <View style={styles.main_container}>
-                <Text>Détail du film</Text>
-            </View>
-        )
+            <ScrollView style={{ flex: 1, padding: 20 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>
+                    {film.title}
+                </Text>
+                <Text>{film.overview}</Text>
+            </ScrollView>
+        );
 
 
     }
-}
 
+}
 const styles = StyleSheet.create({
     main_container: {
         flex: 1,

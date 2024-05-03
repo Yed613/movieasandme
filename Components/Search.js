@@ -9,14 +9,16 @@ import {
     ActivityIndicator,
 } from 'react-native'
 import FilmItem from './FilmItem'
-import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi'
+import { getFilmsFromApiWithSearchedText } from '../API/TMDBApi';
 import { connect } from "react-redux"
+import FilmDetail from './FilmDetail';
 
 class Search extends React.Component {
 
     constructor(props) {
         super(props)
         this.searchedText = '' // Initialisation de notre donnée searchedText en dehors du state
+        this.state = { films: [] }
     }
 
     _loadFilms() {
@@ -24,7 +26,7 @@ class Search extends React.Component {
 
         getFilmsFromApiWithSearchedText(this.searchedText)
             .then((data) => {
-                // Dispatch action pour stocker les films dans Redux
+                this.setState({ films: data.results })
             })
             .catch((err) => {
                 alert('erreur : \n' + err)
@@ -36,11 +38,12 @@ class Search extends React.Component {
     }
 
     _displayLoading() {
-        return this.props.isLoading ? <ActivityIndicator size='large' /> : null
+        return this.state.isLoading ? <ActivityIndicator size='large' /> : null
     }
 
     displayDetailForFilm = (idFilm) => {
-        console.log('film.id=' + idFilm)
+        console.log("DIsplay details")
+        this.props.navigation.navigate("Detail film", { idFilm: idFilm });
     }
 
     render() {
@@ -55,19 +58,19 @@ class Search extends React.Component {
                 <Button title="Rechercher" onPress={() => this._loadFilms()} />
                 {this._displayLoading()}
                 <FlatList
-                    data={this.props.films}
+
+                    data={this.state.films}
                     keyExtractor={(item) => item.id.toString()}
                     renderItem={({ item }) => (
                         <FilmItem
                             film={item}
                             onPress={(FilmItem.onPress)}
                             displayDetailForFilm={this.displayDetailForFilm}
-                            isFilmFavorite={this.props.favoritesFilm.some(
-                                (film) => film.id === item.id
-                            )}
+                            favoritesFilm={this.props.favoritesFilm} // Passer favoritesFilm comme prop à FilmItem
                         />
                     )}
                 />
+
             </View>
         )
     }
@@ -88,12 +91,12 @@ const styles = StyleSheet.create({
     },
 })
 
-const mapStateToProps = (state) => {
+/*const mapStateToProps = (state) => {
     return {
         films: state.films, // Assurez-vous que le reducer stocke les films dans le store sous la clé 'films'
         isLoading: state.isLoading, // Assurez-vous que le reducer stocke l'état de chargement dans le store sous la clé 'isLoading'
         favoritesFilm: state.favoritesFilm, // Assurez-vous que le reducer stocke les films favoris dans le store sous la clé 'favoritesFilm'
     }
 }
-
-export default connect(mapStateToProps)(Search)
+*/
+export default Search 

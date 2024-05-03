@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Image, PreviewLayout } from 'react-native'
-import { StyleSheet } from 'react-native-web'
+import { Button, StyleSheet } from 'react-native-web'
 import { getImageFromApi } from '../API/TMDBApi'
 import { Pressable } from 'react-native'
 
@@ -34,7 +34,9 @@ const styles = StyleSheet.create({
 // class créer pour gérer l'affichage des films 
 class FilmItem extends React.Component {
     render() {
-        const { film, displayDetailForFilm } = this.props
+
+        const { film, displayDetailForFilm } = this.props;
+        console.log(displayDetailForFilm)
         return (
 
             <View style={{
@@ -45,12 +47,18 @@ class FilmItem extends React.Component {
                     style={styles.image}
                     source={getImageFromApi(film.poster_path)}
                     onPress={() => FilmDetail}
+
                 />
                 <View style={{ flex: 2, backgroundColor: '#f0ffff' }}>
                     <Text>
                         {film.title}
 
                     </Text>
+                </View>
+                <View style={{ flex: 2, backgroundColor: 'white', color: 'black' }}>
+
+
+                    <Pressable onPress={() => displayDetailForFilm(film.id)} ><Text>Détail film</Text> </Pressable>
 
                 </View>
                 <View style={{ flex: 3, flexDirection: 'row', backgroundColor: '#f0ffff' }}>
