@@ -38,23 +38,57 @@ const sleep = (milliseconds) => {
 async function slowNetwork() {
     await sleep(100)
 }
+
 const getFilmDetailFromApi = async (id) => {
     try {
-        const url =
-            'https://api.themoviedb.org/3/movie/' +
-            id +
-            '?api_key=' +
-            API_TOKEN +
-            '&language=fr'
-        const response = await axios.get(url)
-        console.log(url)
-        console.log('--getFilmsDetailFromApi--')
-        return response.data
+        const url = `https://api.themoviedb.org/3/movie/${id}?api_key=${API_TOKEN}&language=fr`;
+        const response = await axios.get(url);
+        console.log(url);
+        console.log('--getFilmDetailFromApi--');
+
+        const filmData = response.data;
+        const trailerUrl = await getTrailerUrl(id); // Appel à une fonction pour obtenir l'URL de la bande annonce
+
+        // Ajoute l'URL de la bande annonce à l'objet filmData
+        filmData.trailer = trailerUrl;
+
+        return filmData;
     } catch (error) {
         console.error('Error fetching film detail:', error);
         throw error;
     }
-}
+};
+
+const getTrailerUrl = async (id) => {
+    try {
+        const videosUrl = `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_TOKEN}&language=fr`;
+        const response = await axios.get(videosUrl);
+        console.log(videosUrl);
+        console.log('--getTrailerUrl--');
+
+        const videosData = response.data;
+        const trailer = findTrailer(videosData.results); // Recherche de la bande annonce parmi les vidéos
+
+        if (trailer) {
+            // Retourne l'URL de la bande annonce
+            return `https://www.youtube.com/watch?v=${trailer.key}`;
+        } else {
+            // Aucune bande annonce trouvée
+            return null;
+        }
+    } catch (error) {
+        console.error('Error fetching trailer:', error);
+        throw error;
+    }
+};
+
+const findTrailer = (videos) => {
+    // Recherche de la première vidéo qui est une bande annonce (type = 'Trailer')
+    return videos.find((video) => video.type === 'Trailer');
+};
+
+
+
 
 export { getFilmsFromApiWithSearchedText, getImageFromApi, getFilmDetailFromApi };
 
